@@ -36,3 +36,22 @@
 		#exbestat /eestatisticas
 	-> Na execucao inicial do .bat pelo prompt de comando todos os testes passaram sem falhas e geraram seus
 	respectivos arquivos de log.
+-> Utilizando o git
+	-> Para iniciar um novo repositorio: git init
+	-> Para adicionar novos arquivos no repositorio: git add <arquivo>
+	-> Para adicionar todos os arquivos: git add .
+	-> Para fazer um commit:
+		-> Primeiro configure suas credenciais:
+		git config --global user.email "you@example.com"
+		git config --global user.name "Your Name"
+		-> Performe o commit:
+		git commit
+		-> Para fazer o commit em uma linha so' sem abrir o editor:
+		git commit -m "<mensagem de commit>"
+	-> Para visualizar os commits anteriores: git log
+	-> Para visualizar as diferencas entre o codigo e o repositorio: git diff (--cached para comparar com os arquivos adicionados)
+	-> Para um sumario geral do que mudou: git status
+	-> Para clonar um repositorio do github para um diretorio local: git clone <url> <diretorio>
+	-> Para obter mais informacoes: git help (possivelmente seguido do nome do comando que se quer ter ajuda)
+	-> Para uma introducao oficial de como usar o git: git help tutorial
+
