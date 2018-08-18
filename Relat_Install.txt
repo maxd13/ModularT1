@@ -1,0 +1,38 @@
+-> Criacao do projeto
+	-> Criamos um novo projeto do visual studio 10 nesta pasta chamado ModularT1. Pelo que parece o VS10 nao reconheceu o git.
+	-> Copiamos o ARCABOUCOTESTE_2_02.ZIP da pasta de downloads para a pasta do projeto e extraimos para a pasta ARCABOUCOTESTE_2_02.
+	-> Colocamos o pdf do enunciado do trabalho 1 chamado INF-1301-2018-2-TRABALHO-1.PDF nesta pasta.
+	-> Criamos o repositorio git na pasta deste arquivo:
+		git init
+-> Compilacao do arcabouco e dos modulos do exemplo simples.
+	-> Entramos no prompt de comando do Visual Studio 10 em 
+	C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Microsoft Visual Studio 2010\Visual Studio Tools\Visual Studio Command Prompt (2010)
+		WARNING: NAO UTILIZAR A O PROMPT X64 BITS.
+		WARNING: NAO UTILIZAR A POWERSHELL.
+		WARNING: NAO TIVEMOS BOAS EXPERIENCIAS RODANDO OS SCRIPTS DE FERRAMENTAS DO VISUAL STUDIO MANUALMENTE (NA POWERSHELL).
+	cd "C:\Users\maxd1\OneDrive\Documents\Visual Studio 2010\Projects\ModularT1\ARCABOUCOTESTE_2_02\simples"
+	.\CriaLib.bat
+		-> Tudo OK!
+	.\CompilaTudo.bat
+		-> Tudo OK!
+-> Testes dos scripts
+	ExemploSimples.exe /s{nomedoscript}.script /l{nomedoscript}.log
+	-> Para a versao de debug:
+	ExemploSimplesDGB.exe /s{nomedoscript}DBG.script /l{nomedoscript}DBG.log
+-> Importando arquivos para o projeto e compilando
+	-> Foi possivel compilar o projeto pelo visual studio copiando para dentro dele os arquivos .h e .c
+	do direitorio simples e a biblioteca gerada neste diretorio. Mandar executar o projeto com CTRL+F5
+	cai na mesma tela do ExemploSimples.exe se executado sem parametros.
+	-> Copiamos os scripts de teste para a pasta de Debug assim gerada e criamos um testatudo.bat:
+		REM executa os testes dos exemplos simples
+
+		del estatisticas.estat
+
+		ModularT1      /sTesteBasico        /lTesteBasico        /aestatisticas
+		ModularT1      /sTesteArvore        /lTesteArvore        /aestatisticas
+		ModularT1      /sTesteBasicoSimb    /lTesteBasicoSimb    /aestatisticas
+		ModularT1      /sTesteArvoreSimb    /lTesteArvoreSimb    /aestatisticas
+
+		#exbestat /eestatisticas
+	-> Na execucao inicial do .bat pelo prompt de comando todos os testes passaram sem falhas e geraram seus
+	respectivos arquivos de log.
