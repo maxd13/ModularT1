@@ -74,8 +74,11 @@
          ARV_CondRetNaoPossuiFilho = 7 ,
                /* Nó corrente não possui filho na direção desejada */
 
-         ARV_CondRetFaltouMemoria = 8
+         ARV_CondRetFaltouMemoria = 8 ,
                /* Faltou memória ao alocar dados */
+	   
+	   ARV_CondRetLocalInexistente = 9
+               /* O ponteiro que indica o local de memoria para criar a arvore e' nulo */
 
    } ARV_tpCondRet ;
 
@@ -84,8 +87,11 @@
 *
 *  $FC Função: ARV Criar árvore
 *
+*	$EP Parâmetros
+*     $P arvore - ponteiro para area de memoria onde sera criada a arvore.
+*
 *  $ED Descrição da função
-*     Cria uma nova árvore vazia.
+*     Cria uma nova árvore vazia no local especificado.
 *     Caso já exista uma árvore, esta será destruída.
 *
 *  $FV Valor retornado
@@ -94,20 +100,23 @@
 *
 ***********************************************************************/
 
-   ARV_tpCondRet ARV_CriarArvore( void ) ;
+   ARV_tpCondRet ARV_CriarArvore(void** arvore);
 
 
 /***********************************************************************
 *
 *  $FC Função: ARV Destruir árvore
 *
+*	$EP Parâmetros
+*     $P arvore - ponteiro para area de memoria onde esta a arvore.
+*
 *  $ED Descrição da função
-*     Destrói o corpo e a cabeça da árvore, anulando a árvore corrente.
-*     Faz nada caso a árvore corrente não exista.
+*     Destrói o corpo e a cabeça da árvore, anulando a árvore presente no local especificado.
+*     Faz nada caso a árvore não exista.
 *
 ***********************************************************************/
 
-   void ARV_DestruirArvore( void ) ;
+   void ARV_DestruirArvore(void** arvore);
 
 
 /***********************************************************************
@@ -115,6 +124,7 @@
 *  $FC Função: ARV Adicionar filho à esquerda
 *
 *  $EP Parâmetros
+*	$P arvore - ponteiro para area de memoria onde esta a arvore.
 *     $P ValorParm - valor a ser inserido no novo nó.
 *
 *  $FV Valor retornado
@@ -125,7 +135,7 @@
 *
 ***********************************************************************/
 
-   ARV_tpCondRet ARV_InserirEsquerda( char ValorParm ) ;
+   ARV_tpCondRet ARV_InserirEsquerda(void* arvore, char ValorParm ) ;
 
 
 /***********************************************************************
@@ -133,6 +143,7 @@
 *  $FC Função: ARV Adicionar filho à direita
 *
 *  $EP Parâmetros
+*	$P arvore - ponteiro para area de memoria onde esta a arvore.
 *     $P ValorParm - valor a ser inserido no novo nó
 *
 *  $FV Valor retornado
@@ -143,12 +154,15 @@
 *
 ***********************************************************************/
 
-   ARV_tpCondRet ARV_InserirDireita( char ValorParm ) ;
+   ARV_tpCondRet ARV_InserirDireita(void* arvore, char ValorParm) ;
 
 
 /***********************************************************************
 *
 *  $FC Função: ARV Ir para nó pai
+*
+*  $EP Parâmetros
+*	$P arvore - ponteiro para area de memoria onde esta a arvore.
 *
 *  $FV Valor retornado
 *     ARV_CondRetOK
@@ -158,12 +172,15 @@
 *
 ***********************************************************************/
 
-   ARV_tpCondRet ARV_IrPai( void ) ;
+   ARV_tpCondRet ARV_IrPai(void* arvore) ;
 
 
 /***********************************************************************
 *
 *  $FC Função: ARV Ir para nó à esquerda
+*
+*  $EP Parâmetros
+*	$P arvore - ponteiro para area de memoria onde esta a arvore.
 *
 *  $FV Valor retornado
 *     ARV_CondRetOK
@@ -173,12 +190,15 @@
 *
 ***********************************************************************/
 
-   ARV_tpCondRet ARV_IrNoEsquerda( void ) ;
+   ARV_tpCondRet ARV_IrNoEsquerda(void* arvore) ;
 
 
 /***********************************************************************
 *
 *  $FC Função: ARV Ir para nó à direita
+*
+*  $EP Parâmetros
+*	$P arvore - ponteiro para area de memoria onde esta a arvore.
 *
 *  $FV Valor retornado
 *     ARV_CondRetOK
@@ -188,7 +208,7 @@
 *
 ***********************************************************************/
 
-   ARV_tpCondRet ARV_IrNoDireita( void ) ;
+   ARV_tpCondRet ARV_IrNoDireita(void* arvore) ;
 
 
 /***********************************************************************
@@ -196,6 +216,7 @@
 *  $FC Função: ARV Obter valor corrente
 *
 *  $EP Parâmetros
+*	$P arvore - ponteiro para area de memoria onde esta a arvore.
 *     $P ValorParm - é o parâmetro que receberá o valor contido no nó.
 *                    Este parâmetro é passado por referência.
 *
@@ -206,7 +227,7 @@
 *
 ***********************************************************************/
 
-   ARV_tpCondRet ARV_ObterValorCorr( char * ValorParm ) ;
+   ARV_tpCondRet ARV_ObterValorCorr(void* arvore, char * ValorParm) ;
 
 #undef ARVORE_EXT
 
