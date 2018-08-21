@@ -118,6 +118,22 @@
 
    void ARV_DestruirArvore(void** arvore);
 
+/***********************************************************************
+*
+*  $FC Função: ARV Criar nó raiz da árvore
+*
+*   $EP Parâmetros
+*	$P arvore - ponteiro para area de memoria onde esta a arvore.
+*     $P ValorParm - valor a ser inserido no no' raiz
+*
+*  $FV Valor retornado
+*     ARV_CondRetOK
+*     ARV_CondRetFaltouMemoria
+*     ARV_CondRetNaoCriouRaiz - caso a raiz ja' exista
+*	ARV_CondRetArvoreNaoExiste
+*
+***********************************************************************/
+   ARV_tpCondRet ARV_InserirRaiz(void* arvore, char ValorParm);
 
 /***********************************************************************
 *
@@ -227,7 +243,7 @@
 *
 ***********************************************************************/
 
-   ARV_tpCondRet ARV_ObterValorCorr(void* arvore, char * ValorParm) ;
+   ARV_tpCondRet ARV_ObterValorCorr(void* arvore, char * ValorParm);
 
 #undef ARVORE_EXT
 

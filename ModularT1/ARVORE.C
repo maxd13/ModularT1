@@ -142,6 +142,16 @@
 
 /***************************************************************************
 *
+*  Função: ARV Adicionar no' raiz
+*  ****/
+
+   ARV_tpCondRet ARV_InserirRaiz(void* arvore, char ValorParm){
+	   return CriarNoRaiz((ARV_tpArvore) arvore, ValorParm);
+   }
+
+
+/***************************************************************************
+*
 *  Função: ARV Adicionar filho à esquerda
 *  ****/
 
@@ -317,24 +327,21 @@
 *     ARV_CondRetOK
 *     ARV_CondRetFaltouMemoria
 *     ARV_CondRetNaoCriouRaiz
+*	ARV_CondRetArvoreNaoExiste
 *
 ***********************************************************************/
 
    ARV_tpCondRet CriarNoRaiz(ARV_tpArvore pArvore, char ValorParm){
 
-      ARV_tpCondRet CondRet;
       tpNoArvore * pNo;
 
-      if (!pArvore){
-         CondRet = ARV_CriarArvore((void**)&pArvore);
-         if (CondRet != ARV_CondRetOK) return CondRet;
-      } /* if */
+      if (!pArvore) return ARV_CondRetArvoreNaoExiste;
 
       if (!pArvore->pNoRaiz){
          pNo = CriarNo(ValorParm);
          if (!pNo) return ARV_CondRetFaltouMemoria;
-         pArvore->pNoRaiz = pNo ;
-         pArvore->pNoCorr = pNo ;
+         pArvore->pNoRaiz = pNo;
+         pArvore->pNoCorr = pNo;
 
          return ARV_CondRetOK ;
       } /* if */
