@@ -91,7 +91,7 @@
 *     $P arvore - ponteiro para area de memoria onde sera criada a arvore.
 *
 *  $ED Descrição da função
-*     Cria uma nova árvore vazia no local especificado.
+*     Cria uma nova árvore vazia.
 *     Caso já exista uma árvore, esta será destruída.
 *
 *  $FV Valor retornado
@@ -117,23 +117,6 @@
 ***********************************************************************/
 
    void ARV_DestruirArvore(void** arvore);
-
-/***********************************************************************
-*
-*  $FC Função: ARV Criar nó raiz da árvore
-*
-*   $EP Parâmetros
-*	$P arvore - ponteiro para area de memoria onde esta a arvore.
-*     $P ValorParm - valor a ser inserido no no' raiz
-*
-*  $FV Valor retornado
-*     ARV_CondRetOK
-*     ARV_CondRetFaltouMemoria
-*     ARV_CondRetNaoCriouRaiz - caso a raiz ja' exista
-*	ARV_CondRetArvoreNaoExiste
-*
-***********************************************************************/
-   ARV_tpCondRet ARV_InserirRaiz(void* arvore, char ValorParm);
 
 /***********************************************************************
 *

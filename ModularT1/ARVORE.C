@@ -139,16 +139,7 @@
       } /* if */
 
    } /* Fim função: ARV Destruir árvore */
-
-/***************************************************************************
-*
-*  Função: ARV Adicionar no' raiz
-*  ****/
-
-   ARV_tpCondRet ARV_InserirRaiz(void* arvore, char ValorParm){
-	   return CriarNoRaiz((ARV_tpArvore) arvore, ValorParm);
-   }
-
+	
 
 /***************************************************************************
 *
@@ -163,7 +154,7 @@
 
       /* Tratar vazio, esquerda */
 	if(!pArvore) return ARV_CondRetArvoreNaoExiste;
-	if (!pArvore->pNoRaiz) return ARV_CondRetNaoCriouRaiz;
+	if (!pArvore->pNoRaiz) return CriarNoRaiz(pArvore, ValorParm);
 
       /* Criar nó à esquerda de folha */
 	pCorr = pArvore->pNoCorr;
@@ -199,7 +190,7 @@
 
       /* Tratar vazio, direita */
 	if(!pArvore) return ARV_CondRetArvoreNaoExiste;
-	if (!pArvore->pNoRaiz) return ARV_CondRetNaoCriouRaiz;
+	if (!pArvore->pNoRaiz) return CriarNoRaiz(pArvore, ValorParm);
 
       /* Criar nó à direita de folha */
 	pCorr = pArvore->pNoCorr;

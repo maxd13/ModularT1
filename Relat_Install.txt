@@ -55,3 +55,11 @@
 	-> Para obter mais informacoes: git help (possivelmente seguido do nome do comando que se quer ter ajuda)
 	-> Para uma introducao oficial de como usar o git: git help tutorial
 
+-> Tentando remover dependencias do .exe modificando o visual studio.
+	-> Em Solution Explore, clique com o direito em "ModularT1".
+	-> Fomos em "References..."
+	-> Fomos em Configuration Properties -> Linker e marcamos No em Prevent Dll Binding.
+	-> Demos apply e ok.
+	-> OBS: Como o breno se encarregou de compilar e enviar o arquivo para o professor sem .dlls, demos rollback nesta
+	modificacao. Esta aqui apenas para propositos de documentar uma possibilidade que exploramos.
+

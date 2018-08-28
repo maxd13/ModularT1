@@ -57,7 +57,6 @@
 /* Tabela dos nomes dos comandos de teste específicos */
 
 #define     CRIAR_ARV_CMD       "=criar"
-#define     INS_RAIZ_CMD         "=insraiz"
 #define     INS_DIR_CMD         "=insdir"
 #define     INS_ESQ_CMD         "=insesq"
 #define     IR_PAI_CMD          "=irpai"
@@ -65,6 +64,8 @@
 #define     IR_DIR_CMD          "=irdir"
 #define     OBTER_VAL_CMD       "=obter"
 #define     DESTROI_CMD         "=destruir"
+
+void* arvore = NULL;
 
 /*****  Código das funções exportadas pelo módulo  *****/
 
@@ -99,7 +100,6 @@
       int  NumLidos = -1 ;
 
       TST_tpCondRet Ret ;
-	void* arvore = 0;
 
       /* Testar ARV Criar árvore */
 
@@ -119,26 +119,6 @@
                                     "Retorno errado ao criar árvore." );
 
          } /* fim ativa: Testar ARV Criar árvore */
-
-	/* Testar ARV Adicionar no' raiz */
-
-         else if ( strcmp( ComandoTeste , INS_RAIZ_CMD ) == 0 )
-         {
-
-            NumLidos = LER_LerParametros( "ci" ,
-                               &ValorDado , &CondRetEsperada ) ;
-            if ( NumLidos != 2 )
-            {
-               return TST_CondRetParm ;
-            } /* if */
-
-            CondRetObtido = ARV_InserirRaiz(arvore, ValorDado);
-
-            return TST_CompararInt( CondRetEsperada , CondRetObtido ,
-                                    "Retorno errado inserir àa direita." );
-
-         } /* fim ativa: Testar ARV Adicionar no' raiz */
-
 
       /* Testar ARV Adicionar filho à direita */
 
