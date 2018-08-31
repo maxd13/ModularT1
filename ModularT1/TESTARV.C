@@ -57,6 +57,8 @@
 /* Tabela dos nomes dos comandos de teste específicos */
 #define	START_CMD		  "=iniciar"
 #define	RESET_CMD		  "=resetar"
+#define	PRINT_CMD		  "=exibir"
+#define	MARK_CMD		  "=marcar"
 #define     CRIAR_ARV_CMD       "=criar"
 #define     INS_DIR_CMD         "=insdir"
 #define     INS_ESQ_CMD         "=insesq"
@@ -103,6 +105,7 @@ void* arvores[NUM_ARV];
       char ValorEsperado = '?'  ;
       char ValorObtido   = '!'  ;
       char ValorDado     = '\0' ;
+	int modo = 0;
 
       int  NumLidos = -1 ;
 	int  inxArvore = -1 ;
@@ -149,7 +152,7 @@ void* arvores[NUM_ARV];
 		CondRetObtido = ARV_InserirDireita(arvores[inxArvore], ValorDado);
 
             return TST_CompararInt( CondRetEsperada , CondRetObtido ,
-                                    "Retorno errado inserir àa direita." );
+                                    "Retorno errado inserir à direita." );
 
          } /* fim ativa: Testar ARV Adicionar filho à direita */
 
@@ -246,6 +249,34 @@ void* arvores[NUM_ARV];
             return TST_CondRetOK ;
 
          } /* fim ativa: Testar ARV Destruir árvore */
+
+	   //Exibir arvore
+	   else if ( strcmp( ComandoTeste , PRINT_CMD) == 0 ){
+
+		NumLidos = LER_LerParametros( "i", &inxArvore);
+
+		if ( NumLidos != 1 || !VerificarInx(inxArvore)) return TST_CondRetParm;
+
+            ARV_ExibirArvore(arvores+inxArvore);
+
+            return TST_CondRetOK ;
+
+         }// fim ativa: Exibir Arvore
+
+	   /* Testar ARV Marcar Visitado */
+
+	   else if ( strcmp( ComandoTeste , MARK_CMD) == 0 ){
+
+            NumLidos = LER_LerParametros( "ici" , &inxArvore, &modo, &CondRetEsperada);
+
+            if ( NumLidos != 3 || !VerificarInx(inxArvore)) return TST_CondRetParm;
+
+		CondRetObtido = MarcarVisitado(arvores[inxArvore], (ARV_tpModoVisita)modo);
+
+            return TST_CompararInt( CondRetEsperada , CondRetObtido ,
+                                    "Retorno errado ao marcar nó." );
+
+         } /* fim ativa: Testar ARV Marcar Visitado*/
 
       return TST_CondRetNaoConhec ;
 
