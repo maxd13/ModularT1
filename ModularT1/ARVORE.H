@@ -79,13 +79,30 @@
 
    } ARV_tpCondRet ;
 
+/***********************************************************************
+*
+*  $TC Tipo de dados: ARV Modo de Visita
+*
+*
+***********************************************************************/
+
+   typedef enum {
+	//modo de visita padrao para todos os nos, antes de qualquer visitacao. Normalmente eh utilizado apenas pelo no raiz.
+	ARV_ModoPadrao = 0,
+	//modo de visita para um no quando ele se torna o no corrente a partir de um filho
+	ARV_ModoDePai = 1,
+	//modo de visita para um no esquerdo quando ele se torna o no corrente a partir do seu pai
+	ARV_ModoParaEsq = 2,
+	//modo de visita para um no direito quando ele se torna o no corrente a partir do seu pai
+	ARV_ModoParaDir = 3
+   } ARV_tpModoVisita;
 
 /***********************************************************************
 *
 *  $FC Função: ARV Criar árvore
 *
 *	$EP Parâmetros
-*     $P arvore - ponteiro para area de memoria onde sera criada a arvore.
+*     $P arvore - ponteiro para ponteiro para area de memoria onde sera criada a arvore.
 *
 *  $ED Descrição da função
 *     Cria uma nova árvore vazia.
@@ -105,7 +122,7 @@
 *  $FC Função: ARV Destruir árvore
 *
 *	$EP Parâmetros
-*     $P arvore - ponteiro para area de memoria onde esta a arvore.
+*     $P arvore - ponteiro para ponteiro para area de memoria onde esta a arvore.
 *
 *  $ED Descrição da função
 *     Destrói o corpo e a cabeça da árvore, anulando a árvore presente no local especificado.
@@ -165,6 +182,7 @@
 *  $FV Valor retornado
 *     ARV_CondRetOK
 *     ARV_CondRetArvoreNaoExiste
+*	ARV_CondRetErroEstrutura
 *     ARV_CondRetArvoreVazia
 *     ARV_CondRetNoEhRaiz
 *
@@ -183,6 +201,7 @@
 *  $FV Valor retornado
 *     ARV_CondRetOK
 *     ARV_CondRetArvoreNaoExiste
+*	ARV_CondRetErroEstrutura
 *     ARV_CondRetArvoreVazia
 *     ARV_CondRetNaoPossuiFilho   - nó corrente não possui filho à esquerda
 *
@@ -201,6 +220,7 @@
 *  $FV Valor retornado
 *     ARV_CondRetOK
 *     ARV_CondRetArvoreNaoExiste
+*	ARV_CondRetErroEstrutura
 *     ARV_CondRetArvoreVazia
 *     ARV_CondRetNaoPossuiFilho   - nó corrente não possui filho à direita
 *
@@ -221,11 +241,44 @@
 *  $FV Valor retornado
 *     ARV_CondRetOK
 *     ARV_CondRetArvoreNaoExiste
+*	ARV_CondRetErroEstrutura
 *     ARV_CondRetArvoreVazia
 *
 ***********************************************************************/
 
    ARV_tpCondRet ARV_ObterValorCorr(void* arvore, char * ValorParm);
+
+/***********************************************************************
+*
+*  $FC Função: ARV MarcarVisitado
+*
+*  $EP Parâmetros
+*	$P arvore - ponteiro para area de memoria onde esta a arvore.
+*     $P ARV_tpModoVisita Modo - parametro contendo o modo de visita do no a ser visitado.
+*
+*  $FV Valor retornado
+*     ARV_CondRetOK
+*     ARV_CondRetArvoreNaoExiste
+*	ARV_CondRetErroEstrutura
+*     ARV_CondRetArvoreVazia
+*
+***********************************************************************/
+
+   ARV_tpCondRet MarcarVisitado(void* arvore, ARV_tpModoVisita Modo);
+
+/***********************************************************************
+*
+*  $FC Função: ARV Exibir Arvore
+*
+*	$EP Parâmetros
+*     $P arvore - ponteiro para area de memoria onde esta a arvore.
+*
+*  $ED Descrição da função
+*	Exibe a arvore no stdout.
+*
+***********************************************************************/
+
+   void ARV_ExibirArvore(void* arvore);
 
 #undef ARVORE_EXT
 

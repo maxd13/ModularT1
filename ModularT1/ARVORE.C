@@ -62,6 +62,9 @@
          char Valor ;
                /* Valor do nó */
 
+	   ARV_tpModoVisita ModoVisita;
+	   // Modo de visita do no
+
    } tpNoArvore ;
 
 /***********************************************************************
@@ -165,6 +168,7 @@
             pNo = CriarNo(ValorParm) ;
             if (!pNo) return ARV_CondRetFaltouMemoria;
 
+		pNo->ModoVisita = ARV_ModoParaEsq;
 		pNo->pNoPai	= pCorr;
 		pCorr->pNoEsq = pNo ;
             pArvore->pNoCorr = pNo ;
@@ -201,6 +205,7 @@
             pNo = CriarNo(ValorParm) ;
             if (!pNo) return ARV_CondRetFaltouMemoria;
 
+		pNo->ModoVisita = ARV_ModoParaDir;
 		pNo->pNoPai	= pCorr;
 		pCorr->pNoDir = pNo ;
             pArvore->pNoCorr = pNo ;
@@ -222,12 +227,12 @@
    ARV_tpCondRet ARV_IrPai(void* arvore){
 	ARV_tpArvore pArvore = (ARV_tpArvore) arvore;
       if (!pArvore) return ARV_CondRetArvoreNaoExiste;
-
-      if (!pArvore->pNoCorr) return ARV_CondRetArvoreVazia;
-
+	if (!pArvore->pNoRaiz) return ARV_CondRetArvoreVazia;
+	if (!pArvore->pNoCorr) return ARV_CondRetErroEstrutura;
       if (!pArvore->pNoCorr->pNoPai)return ARV_CondRetNohEhRaiz;
         
 	pArvore->pNoCorr = pArvore->pNoCorr->pNoPai;
+	pArvore->pNoCorr->ModoVisita = ARV_ModoDePai;
 	return ARV_CondRetOK;
 
    } /* Fim função: ARV Ir para nó pai */
@@ -240,12 +245,12 @@
    ARV_tpCondRet ARV_IrNoEsquerda(void* arvore){
 	ARV_tpArvore pArvore = (ARV_tpArvore) arvore;
       if (!pArvore) return ARV_CondRetArvoreNaoExiste;
-
-      if (!pArvore->pNoCorr) return ARV_CondRetArvoreVazia;
-
+	if (!pArvore->pNoRaiz) return ARV_CondRetArvoreVazia;
+	if (!pArvore->pNoCorr) return ARV_CondRetErroEstrutura;
       if (!pArvore->pNoCorr->pNoEsq) return ARV_CondRetNaoPossuiFilho;
 
       pArvore->pNoCorr = pArvore->pNoCorr->pNoEsq;
+	pArvore->pNoCorr->ModoVisita = ARV_ModoParaEsq;
       return ARV_CondRetOK;
 
    } /* Fim função: ARV Ir para nó à esquerda */
@@ -258,12 +263,12 @@
    ARV_tpCondRet ARV_IrNoDireita(void* arvore){
 	ARV_tpArvore pArvore = (ARV_tpArvore) arvore;
       if (!pArvore) return ARV_CondRetArvoreNaoExiste;
-
-      if (!pArvore->pNoCorr) return ARV_CondRetArvoreVazia;
-
+	if (!pArvore->pNoRaiz) return ARV_CondRetArvoreVazia;
+	if (!pArvore->pNoCorr) return ARV_CondRetErroEstrutura;
       if (!pArvore->pNoCorr->pNoDir) return ARV_CondRetNaoPossuiFilho;
 
       pArvore->pNoCorr = pArvore->pNoCorr->pNoDir;
+	pArvore->pNoCorr->ModoVisita = ARV_ModoParaDir;
       return ARV_CondRetOK;
    } /* Fim função: ARV Ir para nó à direita */
 
@@ -275,11 +280,62 @@
    ARV_tpCondRet ARV_ObterValorCorr(void* arvore, char * ValorParm ){
 	ARV_tpArvore pArvore = (ARV_tpArvore) arvore;
       if (!pArvore) return ARV_CondRetArvoreNaoExiste;
-      if (!pArvore->pNoCorr) return ARV_CondRetArvoreVazia;
-
+	if (!pArvore->pNoRaiz) return ARV_CondRetArvoreVazia;
+	if (!pArvore->pNoCorr) return ARV_CondRetErroEstrutura;
       * ValorParm = pArvore->pNoCorr->Valor;
       return ARV_CondRetOK ;
    } /* Fim função: ARV Obter valor corrente */
+
+
+/***************************************************************************
+*
+*  Função: ARV MarcarVisitado
+*  ****/   
+
+   ARV_tpCondRet MarcarVisitado(void* arvore, ARV_tpModoVisita Modo){
+	ARV_tpArvore pArvore = (ARV_tpArvore) arvore;
+      if (!pArvore) return ARV_CondRetArvoreNaoExiste;
+	if(!pArvore->pNoRaiz) return ARV_CondRetArvoreVazia;
+	if (!pArvore->pNoCorr) return ARV_CondRetErroEstrutura;
+	pArvore->pNoCorr->ModoVisita = Modo;
+	return ARV_CondRetOK;
+   }
+
+
+/***************************************************************************
+*
+*  Função: ARV Exibe arvore.
+*  
+*  Notas:
+*  Assumimos aqui que o no corrente da arvore comeca no no raiz.
+*  Tambem entendemos que ordem prefixada pela esquerda = primeiro no corrente, depois esquerda, depois direita.
+*  Note que foi necessario utilizar para ela um argumento void* para que fique consistente com
+*  o resto da implementacao das funcoes de acesso.
+*  ****/
+
+   void ARV_ExibirArvore(void* arvore){
+	ARV_tpArvore pArvore = (ARV_tpArvore) arvore;
+	tpNoArvore* pCorr;
+	if(!pArvore) return;
+	if(!pArvore->pNoRaiz || !pArvore->pNoCorr) return;
+	pCorr = pArvore->pNoCorr;
+	   
+	if(pCorr->ModoVisita == ARV_ModoParaDir) printf("%c ", pCorr->Valor);
+	else printf("( %c ", pCorr->Valor);
+	if(!pCorr->pNoDir) printf(")\n");
+
+	if(pCorr->pNoEsq){
+		pArvore->pNoCorr = pCorr->pNoEsq;
+		pArvore->pNoCorr->ModoVisita = ARV_ModoParaEsq;
+		ARV_ExibirArvore(arvore);
+	} 
+	
+	if(pCorr->pNoDir){
+		pArvore->pNoCorr = pCorr->pNoDir;
+		pArvore->pNoCorr->ModoVisita = ARV_ModoParaDir;
+		ARV_ExibirArvore(arvore);
+	}
+   }
 
 
 /*****  Código das funções encapsuladas no módulo  *****/
@@ -305,6 +361,7 @@
       pNo->pNoPai = NULL ;
       pNo->pNoEsq = NULL ;
       pNo->pNoDir = NULL ;
+	pNo->ModoVisita = ARV_ModoPadrao;
       pNo->Valor  = ValorParm ;
       return pNo ;
 

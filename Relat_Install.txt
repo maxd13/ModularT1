@@ -63,3 +63,8 @@
 	-> OBS: Como o breno se encarregou de compilar e enviar o arquivo para o professor sem .dlls, demos rollback nesta
 	modificacao. Esta aqui apenas para propositos de documentar uma possibilidade que exploramos.
 
+-> Fazendo um deployment
+	-> Apos criado um projeto no Visual Studio, configuramos a solucao para uma construcao de distribuicao (Release), clicando no campo de Solution Configuration
+	-> Para modificar a opcao do compilador usar static linking, clicamos com o botao direito do mouse no projeto e selecionamos "Properties"
+	-> Selecionamos Configuration C/C++, Code Generation e selecionamos o campo "Multi-threaded(/MT)"
+	-> Clicamos em "Aplicar" e, apos, em "OK"
