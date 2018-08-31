@@ -76,9 +76,6 @@
 
          ARV_CondRetFaltouMemoria = 8 ,
                /* Faltou memória ao alocar dados */
-	   
-	   ARV_CondRetLocalInexistente = 9
-               /* O ponteiro que indica o local de memoria para criar a arvore e' nulo */
 
    } ARV_tpCondRet ;
 
@@ -128,6 +125,7 @@
 *
 *  $FV Valor retornado
 *     ARV_CondRetOK
+	ARV_CondRetArvoreNaoExiste
 *     ARV_CondRetErroEstrutura
 *     ARV_CondRetFaltouMemoria
 *     ARV_CondRetNaoEhFolha     - caso não seja folha para a esquerda
@@ -147,6 +145,7 @@
 *
 *  $FV Valor retornado
 *     ARV_CondRetOK
+	ARV_CondRetArvoreNaoExiste;
 *     ARV_CondRetErroEstrutura
 *     ARV_CondRetFaltouMemoria
 *     ARV_CondRetNaoEhFolha     - caso não seja folha para a direita

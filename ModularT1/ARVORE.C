@@ -108,7 +108,8 @@
    ARV_tpCondRet ARV_CriarArvore(void** arvore){
 	   
 	ARV_tpArvore pArvore;
-	if(!arvore) return ARV_CondRetLocalInexistente;
+	//se nao houver aonde criar, a arvore esta criada por vacuidade.
+	if(!arvore) return ARV_CondRetOK;
       if (*arvore) ARV_DestruirArvore(arvore);
 
 	pArvore = ( ARV_tpArvore ) malloc( sizeof(struct tgArvore)) ;

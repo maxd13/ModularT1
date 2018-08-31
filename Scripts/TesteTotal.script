@@ -1,0 +1,225 @@
+// Script:    TesteArvore.script
+// Autor:     Luiz Carlos R. Viana, utilizando trabalho de Arndt von Staa concluido em 18/fev/2006
+// Data:      30/agosto/2018
+// Propósito: Testar construção de árvore
+// Este script testa todos os casos de retorno para cada funcao de acesso da interface ARVORE.H e utiliza 3 arvores.
+// Por definicao, este script é completo. Não sendo de nenhum modo superficial.
+
+== Declarar as árvores usadas
+=declararparm    inxArv0        int   0
+=declararparm    inxArv1        int   1
+
+== Declarar valores a serem inseridos em nós
+=declararparm    NoExcl         char  '!' 
+=declararparm    NoA            char  'a'
+=declararparm    NoX            char  'x'
+
+== Declarar condições de retorno
+=declararparm    CondOK         int   0
+//esse aqui nunca eh utilizado na pratica porque ele so eh retornado pela funcao encapsulada do modulo
+//quando o no raiz ja existe e se tenta cria-lo novamente. Mas a funcao encapsulada so' eh chamada por uma funcao de acesso no caso de nao existir no raiz.
+//desse modo nao eh nem possivel criar um teste para este tipo de retorno. Fazer isso tambem nao traria qualquer beneficio ao funcionamento do programa.
+//=declararparm    CondNaoRaiz    int   1
+//este daqui so deveria ser retornado caso a arvore tivesse um no raiz (existindo e nao sendo vazia) mas nao um no corrente, o que so poderia ser gerado
+//por alguem que ignorasse o encapsulamento da interface (e.g. dando include no .c), uma vez que nenhuma das funcoes de acesso permite fazer isso.
+//Desse modo, tambem nao eh possivel testar este caso por script.
+//=declararparm    CondErroEstrut int   2
+=declararparm    CondNaoFolha   int   3
+=declararparm    CondNaoExiste  int   4 
+=declararparm    CondVazia      int   5
+=declararparm    CondNohRaiz    int   6 
+=declararparm    CondNaoFilho   int   7
+//existe uma entidade na realidade chamada "o professor". 
+//O leitor deste codigo nao precisa ter nocao a que isto se refere, no entanto ele deve saber que esta entidade foi de suma importancia para os requisitos do projeto.
+//Este "professor" disse em "aula" que nao era necessario testar este caso porque "se voce fizer isso sua maquina vai crashar [ou algum outro sinonimo disso que nao me lembro]"
+//alem do mais, sem querer ostentar nem nada, mas acho que seria meio chato de fazer isso em uma maquina com 32gb de ram... ;-)
+//=declararparm    CondMemoria    int   8
+     
+== Verificar comando recuperar
+=irdir      inxArv1            CondOK
+=recuperar
+
+== Verificar recuperar de ObterValorCorr relativo a árvore inexistente
+=obter      inxArv1   NoExcl   CondNaoRaiz  
+=recuperar
+
+== Verificar assertivas de entrada de irdir
+=irdir      inxArv1            CondNaoExiste
+
+== Verificar ObterValorCorr relativo a árvore inexistente
+=obter      inxArv1   NoExcl   CondNaoExiste
+
+== Inserir à direita em árvore inexistente
+=insdir     inxArv1   NoA      CondNaoExiste
+
+== Inserir à esquerda em árvore inexistente
+=insesq     inxArv1   NoA      CondNaoExiste
+
+== Ir para nó pai em árvore inexistente
+=irpai      inxArv1   CondNaoExiste
+
+== Ir para nó esquerdo em árvore inexistente
+=iresq      inxArv1   CondNaoExiste
+
+== Ir para nó direito em árvore inexistente
+=irdir      inxArv1   CondNaoExiste
+
+//para ver se isso nao destroi a terra e todos os seus habitantes(i.e. dá crash na máquina):
+== Destruir árvore inexistente
+=destruir   inxArv1
+
+== Criar árvore
+=criar      inxArv1            CondOK
+=irpai      inxArv1   	       CondVazia
+=irdir      inxArv1   	       CondVazia
+=iresq      inxArv1   	       CondVazia
+=obter      inxArv1   NoExcl   CondVazia
+
+== Inserir à direita (no nó raiz)
+=insdir     inxArv1   NoA      CondOK
+=obter      inxArv1   NoA      CondOK
+
+== Ir para no pai, nao tem
+=irpai      inxArv1            CondNohRaiz
+
+== Ir para direita, nao tem
+=irdir      inxArv1            CondNaoFilho
+
+== Ir para esquerda, nao tem
+=iresq      inxArv1            CondNaoFilho
+
+== Inserir à direita
+=insdir     inxArv1   NoX      CondOK
+=obter      inxArv1   NoX      CondOK
+
+== Ir para no pai, tem
+=irpai      inxArv1            CondOK
+=obter      inxArv1   NoA      CondOK
+
+== Verificar controle de obter o valor inserido errado
+=obter      inxArv1   NoX      CondOK
+=recuperar
+
+== Inserir à direita já havendo filho
+=insdir     inxArv1   NoX      CondNaoFolha
+=obter      inxArv1   NoA      CondOK
+
+== Inserir à esquerda e voltar
+=insesq     inxArv1   'b'      CondOK
+=obter      inxArv1   'b'      CondOK
+=irpai      inxArv1   	       CondOK
+=obter      inxArv1   NoA      CondOK
+
+== Inserir à esquerda já havendo filho
+=insesq     inxArv1   NoX      CondNaoFolha
+=obter      inxArv1   NoA      CondOK
+
+== Ir para esquerda e inserir à direita
+=iresq	    inxArv1	       CondOK
+=obter      inxArv1   'b'      CondOK
+=insdir     inxArv1   'c'      CondOK
+=obter      inxArv1   'c'      CondOK
+
+== Voltar para a raiz
+=irpai      inxArv1            CondOK
+=obter      inxArv1   'b'      CondOK
+=irpai      inxArv1            CondOK
+=obter      inxArv1   NoA      CondOK
+=irpai      inxArv1            CondNohRaiz
+
+== Tornar a arvore simetrica
+=irdir      inxArv1            CondOK
+=obter      inxArv1   NoX      CondOK
+=insdir     inxArv1   'c'      CondOK
+=obter      inxArv1   'c'      CondOK
+=irpai      inxArv1            CondOK
+=obter      inxArv1   NoX      CondOK
+=irpai      inxArv1            CondOK
+=obter      inxArv1   NoA      CondOK
+=irpai      inxArv1            CondNohRaiz
+
+//Testes para a segunda arvore: inxArv0
+//Para esta arvore, invertemos a ordem das inserções.
+== Criar árvore
+=criar      inxArv0            CondOK
+=irpai      inxArv0   	       CondVazia
+=irdir      inxArv0   	       CondVazia
+=iresq      inxArv0   	       CondVazia
+=obter      inxArv0   NoExcl   CondVazia
+
+== Inserir à esquerda (no nó raiz)
+=insesq     inxArv0   NoA      CondOK
+=obter      inxArv0   NoA      CondOK
+
+== Ir para no pai, nao tem
+=irpai      inxArv0            CondNohRaiz
+
+== Ir para direita, nao tem
+=irdir      inxArv0            CondNaoFilho
+
+== Ir para esquerda, nao tem
+=iresq      inxArv0            CondNaoFilho
+
+== Inserir à esquerda
+=insesq     inxArv0   NoX      CondOK
+=obter      inxArv0   NoX      CondOK
+
+== Ir para no pai, tem
+=irpai      inxArv0            CondOK
+=obter      inxArv0   NoA      CondOK
+
+== Verificar controle de obter o valor inserido errado
+=obter      inxArv0   NoX      CondOK
+=recuperar
+
+== Inserir à esquerda já havendo filho
+=insesq     inxArv0   NoX      CondNaoFolha
+=obter      inxArv0   NoA      CondOK
+
+== Inserir à direita e voltar
+=insdir     inxArv0   'b'      CondOK
+=obter      inxArv0   'b'      CondOK
+=irpai      inxArv0   	       CondOK
+=obter      inxArv0   NoA      CondOK
+
+== Inserir à direita já havendo filho
+=insdir     inxArv0   NoX      CondNaoFolha
+=obter      inxArv0   NoA      CondOK
+
+== Ir para direita e inserir à esquerda
+=irdir	    inxArv0	           CondOK
+=obter      inxArv0   'b'      CondOK
+=insesq     inxArv0   'c'      CondOK
+=obter      inxArv0   'c'      CondOK
+
+== Voltar para a raiz
+=irpai      inxArv0            CondOK
+=obter      inxArv0   'b'      CondOK
+=irpai      inxArv0            CondOK
+=obter      inxArv0   NoA      CondOK
+=irpai      inxArv0            CondNohRaiz
+
+== Tornar a arvore simetrica
+=iresq      inxArv0            CondOK
+=obter      inxArv0   NoX      CondOK
+=insesq     inxArv0   'c'      CondOK
+=obter      inxArv0   'c'      CondOK
+=irpai      inxArv0            CondOK
+=obter      inxArv0   NoX      CondOK
+=irpai      inxArv0            CondOK
+=obter      inxArv0   NoA      CondOK
+=irpai      inxArv0            CondNohRaiz
+
+== Cria uma arvore extra
+=criar      2                  CondOK
+=irdir      2                  CondVazia
+
+== Destroi as arvores
+=destruir   0
+=destruir   1
+=destruir   2
+=irdir      inxArv0            CondNaoExiste
+=irdir      inxArv1            CondNaoExiste
+=irdir      2                  CondNaoExiste
+
+// fim
