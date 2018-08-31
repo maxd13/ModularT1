@@ -34,13 +34,16 @@
 //Este "professor" disse em "aula" que nao era necessario testar este caso porque "se voce fizer isso sua maquina vai crashar [ou algum outro sinonimo disso que nao me lembro]"
 //alem do mais, sem querer ostentar nem nada, mas acho que seria meio chato de fazer isso em uma maquina com 32gb de ram... ;-)
 //=declararparm    CondMemoria    int   8
-     
+
+== Inicializar o contexto
+=iniciar
+    
 == Verificar comando recuperar
 =irdir      inxArv1            CondOK
 =recuperar
 
 == Verificar recuperar de ObterValorCorr relativo a árvore inexistente
-=obter      inxArv1   NoExcl   CondNaoRaiz  
+=obter      inxArv1   NoExcl   CondVazia 
 =recuperar
 
 == Verificar assertivas de entrada de irdir
@@ -222,4 +225,5 @@
 =irdir      inxArv1            CondNaoExiste
 =irdir      2                  CondNaoExiste
 
-// fim
+== Finalizar
+=resetar

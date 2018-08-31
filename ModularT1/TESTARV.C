@@ -1,5 +1,5 @@
-/***************************************************************************
-*  $MCI MÛdulo de implementaÁ„o: MÛdulo de teste especÌfico
+Ôªø/***************************************************************************
+*  $MCI M√≥dulo de implementa√ß√£o: M√≥dulo de teste espec√≠fico
 *
 *  Arquivo gerado:              TESTARV.C
 *  Letras identificadoras:      TARV
@@ -11,36 +11,36 @@
 *  Gestor:  DI/PUC-Rio
 *  Autores: avs - Arndt von Staa
 *
-*  $HA HistÛrico de evoluÁ„o:
-*     Vers„o  Autor    Data     ObservaÁıes
-*       3.00   avs   28/02/2003 UniformizaÁ„o da interface das funÁıes e
-*                               de todas as condiÁıes de retorno.
-*       2.00   avs   03/08/2002 EliminaÁ„o de cÛdigo duplicado, reestruturaÁ„o
-*       1.00   avs   15/08/2001 InÌcio do desenvolvimento
+*  $HA Hist√≥rico de evolu√ß√£o:
+*     Vers√£o  Autor    Data     Observa√ß√µes
+*       3.00   avs   28/02/2003 Uniformiza√ß√£o da interface das fun√ß√µes e
+*                               de todas as condi√ß√µes de retorno.
+*       2.00   avs   03/08/2002 Elimina√ß√£o de c√≥digo duplicado, reestrutura√ß√£o
+*       1.00   avs   15/08/2001 In√≠cio do desenvolvimento
 *
-*  $ED DescriÁ„o do mÛdulo
-*     Este m«odulo contÈm as funÁıes especÌficas para o teste do
-*     mÛdulo ·rvore. Ilustra como redigir um interpretador de comandos
-*     de teste especÌficos utilizando o arcabouÁo de teste para C.
+*  $ED Descri√ß√£o do m√≥dulo
+*     Este m√áodulo cont√©m as fun√ß√µes espec√≠ficas para o teste do
+*     m√≥dulo √°rvore. Ilustra como redigir um interpretador de comandos
+*     de teste espec√≠ficos utilizando o arcabou√ßo de teste para C.
 *
-*  $EIU Interface com o usu·rio pessoa
-*     Comandos de teste especÌficos para testar o mÛdulo ·rvore:
+*  $EIU Interface com o usu√°rio pessoa
+*     Comandos de teste espec√≠ficos para testar o m√≥dulo √°rvore:
 *
-*     =criar        - chama a funÁ„o ARV_CriarArvore( )
+*     =criar        - chama a fun√ß√£o ARV_CriarArvore( )
 *     =insdir <Char>
-*                   - chama a funÁ„o ARV_InserirDireita( <Char> )
-*                     Obs. notaÁ„o: <Char>  È o valor do par‚metro
+*                   - chama a fun√ß√£o ARV_InserirDireita( <Char> )
+*                     Obs. nota√ß√£o: <Char>  √© o valor do par√¢metro
 *                     que se encontra no comando de teste.
 *
 *     "=insesq" <Char>
-*                   - chama a funÁ„o ARV_InserirEsquerda( <Char> )
-*     "=irpai"      - chama a funÁ„o ARV_IrPai( )
-*     "=iresq"      - chama a funÁ„o ARV_IrEsquerda( )
-*     "=irdir"      - chama a funÁ„o ARV_IrDireita( )
+*                   - chama a fun√ß√£o ARV_InserirEsquerda( <Char> )
+*     "=irpai"      - chama a fun√ß√£o ARV_IrPai( )
+*     "=iresq"      - chama a fun√ß√£o ARV_IrEsquerda( )
+*     "=irdir"      - chama a fun√ß√£o ARV_IrDireita( )
 *     "=obter" <Char>
-*                   - chama a funÁ„o ARV_ObterValorCorr( ) e compara
+*                   - chama a fun√ß√£o ARV_ObterValorCorr( ) e compara
 *                     o valor retornado com o valor <Char>
-*     "=destroi"    - chama a funÁ„o ARV_DestruirArvore( )
+*     "=destroi"    - chama a fun√ß√£o ARV_DestruirArvore( )
 *
 ***************************************************************************/
 
@@ -54,8 +54,9 @@
 
 #include    "arvore.h"
 
-/* Tabela dos nomes dos comandos de teste especÌficos */
-
+/* Tabela dos nomes dos comandos de teste espec√≠ficos */
+#define	START_CMD		  "=iniciar"
+#define	RESET_CMD		  "=resetar"
 #define     CRIAR_ARV_CMD       "=criar"
 #define     INS_DIR_CMD         "=insdir"
 #define     INS_ESQ_CMD         "=insesq"
@@ -65,20 +66,26 @@
 #define     OBTER_VAL_CMD       "=obter"
 #define     DESTROI_CMD         "=destruir"
 
-void* arvore = NULL;
+#define NUM_ARV 10
 
-/*****  CÛdigo das funÁıes exportadas pelo mÛdulo  *****/
+void* arvores[NUM_ARV];
+
+/***** Prototipos das funcoes encapuladas no modulo *****/
+
+   static int VerificarInx( int inxArvore ) ;
+
+/*****  C√≥digo das fun√ß√µes exportadas pelo m√≥dulo  *****/
 
 
 /***********************************************************************
 *
-*  $FC FunÁ„o: TARV Efetuar operaÁıes de teste especÌficas para ·rvore
+*  $FC Fun√ß√£o: TARV Efetuar opera√ß√µes de teste espec√≠ficas para √°rvore
 *
-*  $ED DescriÁ„o da funÁ„o
-*     Efetua os diversos comandos de teste especÌficos para o mÛdulo
-*     ·rvore sendo testado.
+*  $ED Descri√ß√£o da fun√ß√£o
+*     Efetua os diversos comandos de teste espec√≠ficos para o m√≥dulo
+*     √°rvore sendo testado.
 *
-*  $EP Par‚metros
+*  $EP Par√¢metros
 *     $P ComandoTeste - String contendo o comando
 *
 *  $FV Valor retornado
@@ -98,164 +105,175 @@ void* arvore = NULL;
       char ValorDado     = '\0' ;
 
       int  NumLidos = -1 ;
+	int  inxArvore = -1 ;
 
       TST_tpCondRet Ret ;
 
-      /* Testar ARV Criar ·rvore */
+	int i;
+	
+	//Inicializar o contexto.
+	if(strcmp(ComandoTeste, START_CMD) == 0){
+		for(i = 0; i < NUM_ARV; i++) arvores[i] = NULL;
+		return TST_CondRetOK;
+	}
+	//Reinicializar o contexto (tambem serve para destrui-lo).
+	else if(strcmp(ComandoTeste, RESET_CMD) == 0){
+		for(i = 0; i < NUM_ARV; i++){
+			if(arvores[i]) ARV_DestruirArvore(arvores + i);
+			arvores[i] = NULL;
+		}
+		return TST_CondRetOK;
+	}
+      /* Testar ARV Criar √°rvore */
 
-         if ( strcmp( ComandoTeste , CRIAR_ARV_CMD ) == 0 )
-         {
+         else if ( strcmp( ComandoTeste , CRIAR_ARV_CMD ) == 0 ){
+            NumLidos = LER_LerParametros( "ii" , &inxArvore, &CondRetEsperada );
 
-            NumLidos = LER_LerParametros( "i" ,
-                               &CondRetEsperada ) ;
-            if ( NumLidos != 1 )
-            {
-               return TST_CondRetParm ;
-            } /* if */
+            if ( NumLidos != 2 || !VerificarInx(inxArvore)) return TST_CondRetParm;
 
-            CondRetObtido = ARV_CriarArvore(&arvore);
-
-            return TST_CompararInt( CondRetEsperada , CondRetObtido ,
-                                    "Retorno errado ao criar ·rvore." );
-
-         } /* fim ativa: Testar ARV Criar ·rvore */
-
-      /* Testar ARV Adicionar filho ‡ direita */
-
-         else if ( strcmp( ComandoTeste , INS_DIR_CMD ) == 0 )
-         {
-
-            NumLidos = LER_LerParametros( "ci" ,
-                               &ValorDado , &CondRetEsperada ) ;
-            if ( NumLidos != 2 )
-            {
-               return TST_CondRetParm ;
-            } /* if */
-
-            CondRetObtido = ARV_InserirDireita(arvore, ValorDado);
+            CondRetObtido = ARV_CriarArvore(arvores + inxArvore);
 
             return TST_CompararInt( CondRetEsperada , CondRetObtido ,
-                                    "Retorno errado inserir ‡a direita." );
+                                    "Retorno errado ao criar √°rvore." );
 
-         } /* fim ativa: Testar ARV Adicionar filho ‡ direita */
+         } /* fim ativa: Testar ARV Criar √°rvore */
 
-      /* Testar ARV Adicionar filho ‡ esquerda */
+      /* Testar ARV Adicionar filho √† direita */
 
-         else if ( strcmp( ComandoTeste , INS_ESQ_CMD ) == 0 )
-         {
+         else if ( strcmp( ComandoTeste , INS_DIR_CMD ) == 0 ){
 
-            NumLidos = LER_LerParametros( "ci" ,
-                               &ValorDado , &CondRetEsperada ) ;
-            if ( NumLidos != 2 )
-            {
-               return TST_CondRetParm ;
-            } /* if */
+            NumLidos = LER_LerParametros( "ici" , &inxArvore, &ValorDado , &CondRetEsperada);
 
-            CondRetObtido = ARV_InserirEsquerda(arvore, ValorDado);
+            if ( NumLidos != 3 || !VerificarInx(inxArvore)) return TST_CondRetParm;
+
+		CondRetObtido = ARV_InserirDireita(arvores[inxArvore], ValorDado);
 
             return TST_CompararInt( CondRetEsperada , CondRetObtido ,
-                                    "Retorno errado ao inserir ‡ esquerda." );
+                                    "Retorno errado inserir √†a direita." );
 
-         } /* fim ativa: Testar ARV Adicionar filho ‡ esquerda */
+         } /* fim ativa: Testar ARV Adicionar filho √† direita */
 
-      /* Testar ARV Ir para nÛ pai */
+      /* Testar ARV Adicionar filho √† esquerda */
 
-         else if ( strcmp( ComandoTeste , IR_PAI_CMD ) == 0 )
-         {
+         else if ( strcmp( ComandoTeste , INS_ESQ_CMD ) == 0 ){
 
-            NumLidos = LER_LerParametros( "i" ,
-                               &CondRetEsperada ) ;
-            if ( NumLidos != 1 )
-            {
-               return TST_CondRetParm ;
-            } /* if */
+            NumLidos = LER_LerParametros( "ici" , &inxArvore, &ValorDado , &CondRetEsperada);
 
-            CondRetObtido = ARV_IrPai(arvore);
+            if ( NumLidos != 3 || !VerificarInx(inxArvore)) return TST_CondRetParm;
+
+            CondRetObtido = ARV_InserirEsquerda(arvores[inxArvore], ValorDado);
+
+            return TST_CompararInt( CondRetEsperada , CondRetObtido ,
+                                    "Retorno errado ao inserir √† esquerda." );
+
+         } /* fim ativa: Testar ARV Adicionar filho √† esquerda */
+
+      /* Testar ARV Ir para n√≥ pai */
+
+         else if ( strcmp( ComandoTeste , IR_PAI_CMD ) == 0 ){
+
+            NumLidos = LER_LerParametros( "ii" , &inxArvore, &CondRetEsperada);
+
+		if ( NumLidos != 2 || !VerificarInx(inxArvore)) return TST_CondRetParm;
+
+            CondRetObtido = ARV_IrPai(arvores[inxArvore]);
 
             return TST_CompararInt( CondRetEsperada , CondRetObtido ,
                                     "Retorno errado ao ir para pai." );
 
-         } /* fim ativa: Testar ARV Ir para nÛ pai */
+         } /* fim ativa: Testar ARV Ir para n√≥ pai */
 
-      /* Testar ARV Ir para nÛ ‡ esquerda */
+      /* Testar ARV Ir para n√≥ √† esquerda */
 
-         else if ( strcmp( ComandoTeste , IR_ESQ_CMD ) == 0 )
-         {
+         else if ( strcmp( ComandoTeste , IR_ESQ_CMD ) == 0 ){
 
-            NumLidos = LER_LerParametros( "i" ,
-                               &CondRetEsperada ) ;
-            if ( NumLidos != 1 )
-            {
-               return TST_CondRetParm ;
-            } /* if */
+            NumLidos = LER_LerParametros( "ii", &inxArvore, &CondRetEsperada);
 
-            CondRetObtido = ARV_IrNoEsquerda(arvore);
+            if ( NumLidos != 2 || !VerificarInx(inxArvore)) return TST_CondRetParm;
+
+            CondRetObtido = ARV_IrNoEsquerda(arvores[inxArvore]);
 
             return TST_CompararInt( CondRetEsperada , CondRetObtido ,
                                     "Retorno errado ao ir para esquerda." );
 
-         } /* fim ativa: Testar ARV Ir para nÛ ‡ esquerda */
+         } /* fim ativa: Testar ARV Ir para n√≥ √† esquerda */
 
-      /* Testar ARV Ir para nÛ ‡ direita */
+      /* Testar ARV Ir para n√≥ √† direita */
 
-         else if ( strcmp( ComandoTeste , IR_DIR_CMD ) == 0 )
-         {
+         else if ( strcmp( ComandoTeste , IR_DIR_CMD ) == 0 ){
 
-            NumLidos = LER_LerParametros( "i" ,
-                               &CondRetEsperada ) ;
-            if ( NumLidos != 1 )
-            {
-               return TST_CondRetParm ;
-            } /* if */
+            NumLidos = LER_LerParametros( "ii", &inxArvore, &CondRetEsperada);
 
-            CondRetObtido = ARV_IrNoDireita(arvore);
+		if ( NumLidos != 2 || !VerificarInx(inxArvore)) return TST_CondRetParm;
+
+            CondRetObtido = ARV_IrNoDireita(arvores[inxArvore]);
 
             return TST_CompararInt( CondRetEsperada , CondRetObtido ,
                                     "Retorno errado ao ir para direita." );
 
-         } /* fim ativa: Testar ARV Ir para nÛ ‡ direita */
+         } /* fim ativa: Testar ARV Ir para n√≥ √† direita */
 
       /* Testar ARV Obter valor corrente */
 
-         else if ( strcmp( ComandoTeste , OBTER_VAL_CMD ) == 0 )
-         {
+         else if ( strcmp( ComandoTeste , OBTER_VAL_CMD ) == 0 ){
 
-            NumLidos = LER_LerParametros( "ci" ,
-                               &ValorEsperado , &CondRetEsperada ) ;
-            if ( NumLidos != 2 )
-            {
-               return TST_CondRetParm ;
-            } /* if */
+            NumLidos = LER_LerParametros( "ici", &inxArvore, &ValorEsperado, &CondRetEsperada);
 
-            CondRetObtido = ARV_ObterValorCorr(arvore, &ValorObtido);
+		if ( NumLidos != 3 || !VerificarInx(inxArvore)) return TST_CondRetParm;
+
+            CondRetObtido = ARV_ObterValorCorr(arvores[inxArvore], &ValorObtido);
 
             Ret = TST_CompararInt( CondRetEsperada , CondRetObtido ,
                                    "Retorno errado ao obter valor corrente." );
 
-            if ( Ret != TST_CondRetOK )
-            {
-               return Ret ;
-            } /* if */
+            if ( Ret != TST_CondRetOK ) return Ret;
 
             return TST_CompararChar( ValorEsperado , ValorObtido ,
-                                     "Conte˙do do nÛ est· errado." ) ;
+                                     "Conte√∫do do n√≥ est√° errado." ) ;
 
          } /* fim ativa: Testar ARV Obter valor corrente */
 
-      /* Testar ARV Destruir ·rvore */
+      /* Testar ARV Destruir √°rvore */
 
-         else if ( strcmp( ComandoTeste , DESTROI_CMD ) == 0 )
-         {
+         else if ( strcmp( ComandoTeste , DESTROI_CMD ) == 0 ){
 
-            ARV_DestruirArvore(&arvore);
+		NumLidos = LER_LerParametros( "i", &inxArvore);
+
+		if ( NumLidos != 1 || !VerificarInx(inxArvore)) return TST_CondRetParm;
+
+            ARV_DestruirArvore(arvores+inxArvore);
 
             return TST_CondRetOK ;
 
-         } /* fim ativa: Testar ARV Destruir ·rvore */
+         } /* fim ativa: Testar ARV Destruir √°rvore */
 
       return TST_CondRetNaoConhec ;
 
-   } /* Fim funÁ„o: TARV Efetuar operaÁıes de teste especÌficas para ·rvore */
+   } /* Fim fun√ß√£o: TARV Efetuar opera√ß√µes de teste espec√≠ficas para √°rvore */
 
-/********** Fim do mÛdulo de implementaÁ„o: MÛdulo de teste especÌfico **********/
+
+/***********************************************************************
+*
+*  $FC Funcao: TARV -Verificar indice de arvore
+*
+*  $FV Valor retornado
+*     0 - inxArvore nao vale
+*     1 - inxArvore vale
+*
+***********************************************************************/
+
+   int VerificarInx( int inxArvore ){
+
+      if ( ( inxArvore <   0 )
+        || ( inxArvore >= NUM_ARV))
+      {
+         return 0 ;
+      } /* if */
+
+      return 1 ;
+
+   }
+
+
+/********** Fim do m√≥dulo de implementa√ß√£o: M√≥dulo de teste espec√≠fico **********/
 
