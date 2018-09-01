@@ -244,7 +244,7 @@ void* arvores[NUM_ARV];
 
 		if ( NumLidos != 1 || !VerificarInx(inxArvore)) return TST_CondRetParm;
 
-            ARV_DestruirArvore(arvores+inxArvore);
+            ARV_DestruirArvore(&arvores[inxArvore]);
 
             return TST_CondRetOK ;
 
@@ -257,7 +257,9 @@ void* arvores[NUM_ARV];
 
 		if ( NumLidos != 1 || !VerificarInx(inxArvore)) return TST_CondRetParm;
 
-            ARV_ExibirArvore(arvores+inxArvore);
+		printf("arvore %d:\n", inxArvore);
+            ARV_ExibirArvore(arvores[inxArvore]);
+		printf("\n");
 
             return TST_CondRetOK ;
 
@@ -267,7 +269,7 @@ void* arvores[NUM_ARV];
 
 	   else if ( strcmp( ComandoTeste , MARK_CMD) == 0 ){
 
-            NumLidos = LER_LerParametros( "ici" , &inxArvore, &modo, &CondRetEsperada);
+            NumLidos = LER_LerParametros( "iii" , &inxArvore, &modo, &CondRetEsperada);
 
             if ( NumLidos != 3 || !VerificarInx(inxArvore)) return TST_CondRetParm;
 

@@ -319,10 +319,14 @@
 	if(!pArvore) return;
 	if(!pArvore->pNoRaiz || !pArvore->pNoCorr) return;
 	pCorr = pArvore->pNoCorr;
-	   
-	if(pCorr->ModoVisita == ARV_ModoParaDir) printf("%c ", pCorr->Valor);
+	//modos de visita sao absolutamente desnecessarios ao percorrer a arvore, 
+	//sao menos eficientes, requerem a colaboracao do resto do codigo inteiro para funcionar, e estao sujeitos a erros.
+	//originalmente haviamos tentado utiliza-los aqui, mas isto seria dor de cabeca desnecessaria.
+	//Talvez eles fossem mais uteis se tivessemos modificado o codigo para que quando se saisse de um no, o seu modo de visita voltasse
+	//ao modo padrao ou ao seu modo original antes da visita. Alem disto terianos que ter uma funcao de acesso para retornar o valor do ModoVisita
+	//do no corrente. MAS NOTE QUE NADA DISSO FAZIA PARTE DA ESPECIFICACAO ORIGINAL.
+	if(pCorr->pNoPai && pCorr->pNoPai->pNoDir == pCorr) printf("%c ", pCorr->Valor);
 	else printf("( %c ", pCorr->Valor);
-	if(!pCorr->pNoDir) printf(")\n");
 
 	if(pCorr->pNoEsq){
 		pArvore->pNoCorr = pCorr->pNoEsq;
@@ -334,7 +338,7 @@
 		pArvore->pNoCorr = pCorr->pNoDir;
 		pArvore->pNoCorr->ModoVisita = ARV_ModoParaDir;
 		ARV_ExibirArvore(arvore);
-	}
+	}else printf(") ");
    }
 
 

@@ -72,7 +72,7 @@
 =irdir      inxArv1   CondNaoExiste
 
 == Marcar no em arvore inexistente
-=marcar     inxArv1   ModoPai	CondNaoExiste
+=marcar     inxArv1  ModoPai CondNaoExiste
 
 //para ver se isso nao destroi a terra e todos os seus habitantes(i.e. dá crash na máquina):
 == Destruir árvore inexistente
@@ -248,7 +248,7 @@
 == Cria uma arvore extra e exibir
 =criar      2                  CondOK
 =irdir      2                  CondVazia
-=exibir     inxArv1
+=exibir   2
 
 == Destroi as arvores
 =destruir   0
